@@ -1,0 +1,25 @@
+{
+  "name": "denormalize",
+  "version": "1.0.0",
+  "description": "Functions that work with JavaScript objects and arrays using named properties.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fhellwig/denormalize.git"
+  },
+  "keywords": [
+    "javascript",
+    "objects",
+    "arrays",
+    "properties"
+  ],
+  "author": "Frank Hellwig <frank@hellwig.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fhellwig/denormalize/issues"
+  },
+  "homepage": "https://github.com/fhellwig/denormalize#readme"
+}
