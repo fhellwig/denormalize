@@ -59,9 +59,7 @@ The following are all valid property names:
 
 ## API
 
-The `denormalize` package exports simple functions and a few more advanced functions.
-
-### Simple Functions
+The `denormalize` package exports the following functions:
 
 `getProperty(data, name)`
 
@@ -81,11 +79,9 @@ The `denormalize` package exports simple functions and a few more advanced funct
 
 - Performs the inverse of the `createPropertyName` function. Calling `parsePropertyName('parts[5].supplier.address.city')` returns the array `['parts', 5, 'supplier', 'address', 'city']`.
 
-## Advanced Functions
-
 `denormalizeProperties(data)`
 
-- Given an object or an array, creates a map of property names to property values. For example, calling this function with the data in the example above would return the following map object:
+- Given an object or an array, creates a map of property names to property values. For example, calling this function with the data in the example above returns the following map object:
 
 ```javascript
 {
@@ -102,7 +98,7 @@ The `denormalize` package exports simple functions and a few more advanced funct
 
 `normalizeProperties(map [, normalizeArrays])`
 
-- Performs the inverse of the `denormalizeProperties` function. Calling this with the map from the previous example would result in the original JavaScript object being returned.
+- Performs the inverse of the `denormalizeProperties` function. Calling this with the map from the previous example results in the original JavaScript object being returned.
 
 - The second parameter defaults to `true` meaning that the `normalizeArrayProperties` function (see below) is called on the return value before it is returned. This eliminates holes in all arrays.
 
@@ -116,7 +112,7 @@ This utility came about because I had a large HTML form representing a complex d
 
 Creating property names that represented the location of the value in the data object was the solution. What I needed next was the means to easily go back and forth between the field representation used by the form and the data object retrieved from (and sent to) the server. This package is the result of that exercise.
 
-On getting the data from the server, I would call `denormalizeProperties` to turn the data into a "field map" that could be used when populating the form. Then, when the form is submitted, I would call `normalizeProperties` to get back to the JavaScript object.
+On getting the data from the server, I call `denormalizeProperties` to turn the data into a "field map" that could be used when populating the form. Then, when the form is submitted, I call `normalizeProperties` to get back to the JavaScript object.
 
 ## License
 
