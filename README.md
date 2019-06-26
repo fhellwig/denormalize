@@ -45,7 +45,7 @@ setProperty(person, 'dates[2].date', '2016-09-30'); // adds a property to the ob
 
 ## Syntax
 
-The syntax for naming a property follows the conventional JavaScript dotted notation. Arrays elements are identified using the bracket notation.
+The syntax for naming a property follows the conventional JavaScript dot notation. Array elements are identified using the bracket notation.
 
 The following are all valid property names:
 
