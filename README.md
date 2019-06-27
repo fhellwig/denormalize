@@ -26,25 +26,15 @@ const person = {
 };
 ```
 
-...we can use the methods provided by this package to get and set properties by name.
+...we can denormalize the properties into a map as follows:
 
 ```javascript
-const { getProperty, setProperty } = require('denormalize');
-
-getProperty(person, 'name.first'); // returns 'John'
-getProperty(person, 'friends[0]'); // returns 'Alice'
-getProperty(person, 'dates[1].type'); // returns 'graduation'
-
-getProperty(person, 'dates'); // returns the entire array
-getProperty(person, 'dates[1]'); // returns one object
-
-setProperty(person, 'dates[2].type', 'wedding'); // adds an object to the array
-setProperty(person, 'dates[2].date', '2016-09-30'); // adds a property to the object
+const { denormalizeProperties} = require('denormalize');
 
 const map = denormalizeProperties(person);
 ```
 
-The result of calling `denormalizeProperties(person)` results in the following `map` object:
+The returned `map` object is a one-level structure where each key represents the path to the property in the original object and the value is the value of that property in the original object.
 
 ```javascript
 {
@@ -60,6 +50,27 @@ The result of calling `denormalizeProperties(person)` results in the following `
 ```
 
 The object can then be reconstituted by calling `normalizeProperties(map)` resulting in an object equivalent to the original `person` object.
+
+```javascript
+const copyOfPerson = normalizeProperties(map);
+```
+
+We can also get and set individual properties by name.
+
+```javascript
+const { getProperty, setProperty } = require('denormalize');
+
+getProperty(person, 'name.first'); // returns 'John'
+getProperty(person, 'friends[0]'); // returns 'Alice'
+getProperty(person, 'dates[1].type'); // returns 'graduation'
+
+getProperty(person, 'dates'); // returns the entire array
+getProperty(person, 'dates[1]'); // returns one object
+
+// Add another date object to the person.
+setProperty(person, 'dates[2].type', 'wedding');
+setProperty(person, 'dates[2].date', '2016-09-30');
+```
 
 ## Syntax
 
@@ -80,41 +91,41 @@ The following are all valid property names:
 
 The `denormalize` package exports the following functions:
 
-`getProperty(data, name)`
+### `getProperty(data, name)`
 
 - Returns the property value from the data specified by the name.
 
-`setProperty(data, name, value)`
+### `setProperty(data, name, value)`
 
 - Sets the property value in the data specified by the name. Intermediate objects and arrays are created as needed. Please note that, using the array syntax, it is possible to create "holes" in arrays (i.e., unassigned elements). These holes can be removed by the `normalizeArrayProperties` function and are removed by default with the `normalizeProperties` function.
 
 - This function modifies the specified `data` parameter, which *must* be an object.
 
-`createPropertyName(...args)`
+### `createPropertyName(...args)`
 
 - Given a set of strings and numbers, creates a property name. For example, calling `createPropertyName('parts', 5, 'supplier', 'address', 'city')` returns the string `'parts[5].supplier.address.city'`. Numbers (i.e., `typeof arg === 'number'`) automatically get the bracket syntax as they are assumed to be an array index.
 
-`parsePropertyName(name)`
+### `parsePropertyName(name)`
 
 - Performs the inverse of the `createPropertyName` function. Calling `parsePropertyName('parts[5].supplier.address.city')` returns the array `['parts', 5, 'supplier', 'address', 'city']`.
 
-`denormalizeProperties(data)`
+### `denormalizeProperties(data)`
 
 - Given an object, creates a map of property names to property values. The result of calling this is shown in the example above.
 
-`normalizeProperties(map [, normalizeArrays])`
+### `normalizeProperties(map [, normalizeArrays])`
 
 - Performs the inverse of the `denormalizeProperties` function. Calling this with the map from the previous example results in the original JavaScript object being returned.
 
 - The second parameter defaults to `true` meaning that the `normalizeArrayProperties` function (see below) is called on the return value before it is returned. This eliminates holes in all arrays.
 
-`copyProperties(data [, normalizeArrays])`
+### `copyProperties(data [, normalizeArrays])`
 
 - Copies the properties from one object to another. This is equivalent to calling `normalizeProperties(denormalizeProperties(data), normalizeArrays)`.
 
 - The `normalizeArrays` parameter defaults to `true`.
 
-`normalizeArrayProperties(data)`
+### `normalizeArrayProperties(data)`
 
 - Recursively traverses the data and eliminates holes in arrays. The specified data is _not_ modified. The normalized data is returned.
 
