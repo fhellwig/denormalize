@@ -51,10 +51,6 @@ The returned `map` object is a one-level structure where each key represents the
 
 The object can then be reconstituted by calling `normalizeProperties(map)` resulting in an object equivalent to the original `person` object.
 
-```javascript
-const copyOfPerson = normalizeProperties(map);
-```
-
 We can also get and set individual properties by name.
 
 ```javascript
