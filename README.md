@@ -100,26 +100,19 @@ The `denormalize` package exports the following functions:
 
 `denormalizeProperties(data)`
 
-- Given an object or an array, creates a map of property names to property values. For example, calling this function with the data in the example above returns the following map object:
-
-```javascript
-{
-  "name.first": "John",
-  "name.last": "Smith",
-  "friends[0]": "Alice",
-  "friends[1]": "Bob",
-  "dates[0].type": "birthdate",
-  "dates[0].date": "1994-03-12",
-  "dates[1].type": "graduation",
-  "dates[1].date": "2012-06-20"
-}
-```
+- Given an object, creates a map of property names to property values. The result of calling this is shown in the example above.
 
 `normalizeProperties(map [, normalizeArrays])`
 
 - Performs the inverse of the `denormalizeProperties` function. Calling this with the map from the previous example results in the original JavaScript object being returned.
 
 - The second parameter defaults to `true` meaning that the `normalizeArrayProperties` function (see below) is called on the return value before it is returned. This eliminates holes in all arrays.
+
+`copyProperties(data [, normalizeArrays])`
+
+- Copies the properties from one object to another. This is equivalent to calling `normalizeProperties(denormalizeProperties(data), normalizeArrays)`.
+
+- The `normalizeArrays` parameter defaults to `true`.
 
 `normalizeArrayProperties(data)`
 

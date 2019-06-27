@@ -165,6 +165,14 @@ function normalizeProperties(map, normalizeArrays = true) {
 }
 
 //------------------------------------------------------------------------------
+// copyProperties
+//------------------------------------------------------------------------------
+
+function copyProperties(map, normalizeArrays = true) {
+  return normalizeProperties(denormalizeProperties(data), normalizeArrays);
+}
+
+//------------------------------------------------------------------------------
 // normalizeArrayProperties
 //------------------------------------------------------------------------------
 
@@ -226,5 +234,6 @@ module.exports = {
   parsePropertyName,
   denormalizeProperties,
   normalizeProperties,
+  copyProperties,
   normalizeArrayProperties
 };
