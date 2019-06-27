@@ -7,6 +7,9 @@
 //------------------------------------------------------------------------------
 
 function getProperty(data, name) {
+  if (!_isObject(data)) {
+    throw new Error(`The 'data' argument must be an object.`);
+  }
   const keys = parsePropertyName(name);
   while (keys.length > 0) {
     const key = keys.shift();
@@ -23,13 +26,10 @@ function getProperty(data, name) {
 //------------------------------------------------------------------------------
 
 function setProperty(data, name, value) {
+  if (!_isObject(data)) {
+    throw new Error(`The 'data' argument must be an object.`);
+  }
   const keys = parsePropertyName(name);
-  if (keys.length === 0) {
-    return data;
-  }
-  if (data === null) {
-    data = typeof keys[0] === 'number' ? [] : {};
-  }
   return _setProperty(data, keys, value);
 }
 
@@ -39,18 +39,21 @@ function setProperty(data, name, value) {
 
 function createPropertyName(...args) {
   const tokens = [];
-  for (let arg of args) {
+  args.forEach((arg, i) => {
     if (typeof arg === 'string') {
       if (tokens.length > 0) {
         tokens.push('.');
       }
       tokens.push(arg);
     } else if (typeof arg === 'number') {
+      if (i === 0) {
+        throw new Error('Invalid argument type at index 0 (first argument must be a string).');
+      }
       tokens.push(`[${arg}]`);
     } else {
-      throw new Error('Invalid argument type: ' + typeof arg);
+      throw new Error(`Invalid argument type at index ${i} (must be string or number).`);
     }
-  }
+  });
   return tokens.join('');
 }
 
@@ -107,6 +110,12 @@ function parsePropertyName(s) {
   if (token.length > 0) {
     tokens.push(token.join(''));
   }
+  if (tokens.length === 0) {
+    throw new Error(`Invalid syntax in '${s}' (name cannot be empty).`);
+  }
+  if (typeof tokens[0] === 'number') {
+    throw new Error(`Invalid syntax in '${s}' (name must start with a string property).`);
+  }
   return tokens;
 }
 
@@ -114,31 +123,39 @@ function parsePropertyName(s) {
 // denormalizeProperties
 //------------------------------------------------------------------------------
 
-function denormalizeProperties(data, names = [], current = {}) {
-  if (data === null) {
-    current[createPropertyName(...names)] = null;
-  } else if (Array.isArray(data)) {
+function denormalizeProperties(data, keys, map) {
+  if (arguments.length === 1) {
+    if (!_isObject(data)) {
+      throw new Error(`The 'data' argument must be an object.`);
+    }
+    keys = [];
+    map = {};
+  }
+  if (_isArray(data)) {
     data.forEach((d, i) => {
-      denormalizeProperties(d, [...names, i], current);
+      denormalizeProperties(d, [...keys, i], map);
     });
-  } else if (typeof data === 'object') {
+  } else if (_isObject(data)) {
     Object.keys(data).forEach(key => {
-      denormalizeProperties(data[key], [...names, key], current);
+      denormalizeProperties(data[key], [...keys, key], map);
     });
   } else {
-    current[createPropertyName(...names)] = data;
+    map[createPropertyName(...keys)] = data;
   }
-  return current;
+  return map;
 }
 
 //------------------------------------------------------------------------------
 // normalizeProperties
 //------------------------------------------------------------------------------
 
-function normalizeProperties(properties, normalizeArrays = true) {
-  let retval = null;
-  Object.keys(properties).forEach(name => {
-    retval = setProperty(retval, name, properties[name]);
+function normalizeProperties(map, normalizeArrays = true) {
+  if (!_isObject(map)) {
+    throw new Error(`The 'map' argument must be an object.`);
+  }
+  let retval = {};
+  Object.keys(map).forEach(name => {
+    setProperty(retval, name, map[name]);
   });
   if (normalizeArrays) {
     return normalizeArrayProperties(retval);
@@ -152,14 +169,11 @@ function normalizeProperties(properties, normalizeArrays = true) {
 //------------------------------------------------------------------------------
 
 function normalizeArrayProperties(data) {
-  if (data === null) {
-    return null;
-  }
-  if (Array.isArray(data)) {
+  if (_isArray(data)) {
     const normalized = data.filter(e => typeof e !== 'undefined');
     return normalized.map(e => normalizeArrayProperties(e));
   }
-  if (typeof data === 'object') {
+  if (_isObject(data)) {
     const retval = {};
     Object.keys(data).forEach(key => {
       retval[key] = normalizeArrayProperties(data[key]);
@@ -172,10 +186,6 @@ function normalizeArrayProperties(data) {
 //==============================================================================
 // PRIVATE FUNCTIONS
 //==============================================================================
-
-//------------------------------------------------------------------------------
-// _setProperty
-//------------------------------------------------------------------------------
 
 function _setProperty(data, keys, value) {
   const key = keys.shift();
@@ -195,6 +205,14 @@ function _setProperty(data, keys, value) {
     _setProperty(data[key], keys, value);
   }
   return data;
+}
+
+function _isArray(val) {
+  return Array.isArray(val);
+}
+
+function _isObject(val) {
+  return val !== null && typeof val === 'object' && !_isArray(val);
 }
 
 //==============================================================================

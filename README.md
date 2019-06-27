@@ -30,7 +30,6 @@ const person = {
 
 ```javascript
 const { getProperty, setProperty } = require('denormalize');
-// import { getProperty, setProperty } from 'denormalize';
 
 getProperty(person, 'name.first'); // returns 'John'
 getProperty(person, 'friends[0]'); // returns 'Alice'
@@ -41,7 +40,26 @@ getProperty(person, 'dates[1]'); // returns one object
 
 setProperty(person, 'dates[2].type', 'wedding'); // adds an object to the array
 setProperty(person, 'dates[2].date', '2016-09-30'); // adds a property to the object
+
+const map = denormalizeProperties(person);
 ```
+
+The result of calling `denormalizeProperties(person)` results in the following `map` object:
+
+```javascript
+{
+  "name.first": "John",
+  "name.last": "Smith",
+  "friends[0]": "Alice",
+  "friends[1]": "Bob",
+  "dates[0].type": "birthdate",
+  "dates[0].date": "1994-03-12",
+  "dates[1].type": "graduation",
+  "dates[1].date": "2012-06-20"
+}
+```
+
+The object can then be reconstituted by calling `normalizeProperties(map)` resulting in an object equivalent to the original `person` object.
 
 ## Syntax
 
@@ -50,12 +68,13 @@ The syntax for naming a property follows the conventional JavaScript dot notatio
 The following are all valid property names:
 
 ```javascript
-'parts[5].supplier.address.city';
-'[3]'; // assumes that the data is an array
-'theme.dark.colors';
-'name';
-'phone-numbers[3].area-code';
+'parts[5].supplier.address.city'
+'theme.dark.colors'
+'name'
+'phone-numbers[3].area-code'
 ```
+
+**A named property cannot start with an array index.** For example, `[1].person.name` is not valid. This is because, when normalizing a map (see `normalizeProperties`), we need to assume some starting point and this package always assumes an object. Once that is established, internal arrays can be created as nested properties in the object.
 
 ## API
 
@@ -67,9 +86,9 @@ The `denormalize` package exports the following functions:
 
 `setProperty(data, name, value)`
 
-- Sets the property value in the data specified by the name. Intermediate objects and arrays are created as needed. Please note that, using the array syntax, it is possible to create "holes" in arrays (i.e., unassigned elements).
+- Sets the property value in the data specified by the name. Intermediate objects and arrays are created as needed. Please note that, using the array syntax, it is possible to create "holes" in arrays (i.e., unassigned elements). These holes can be removed by the `normalizeArrayProperties` function and are removed by default with the `normalizeProperties` function.
 
-- This function modifies the specified data and returns it. If the `data` parameter is `null`, then the first element of the `name` is examined and the appropriate object is created, modified, and returned. If the first element of the name is a number, then an array is created, modified, and returned. Otherwise, an object is created, modified, and returned.
+- This function modifies the specified `data` parameter, which *must* be an object.
 
 `createPropertyName(...args)`
 
