@@ -1,4 +1,9 @@
-const { getProperty, denormalizeProperties, normalizeProperties } = require('./index');
+const {
+  getProperty,
+  denormalizeProperties,
+  normalizeProperties,
+  copyProperties
+} = require('./index');
 
 const data = {
   name: {
@@ -24,9 +29,11 @@ const fields = denormalizeProperties(data);
 fields['friends[8]'] = getProperty(data, 'friends[1]');
 delete fields['friends[1]'];
 
-const newData = normalizeProperties(fields);
+const data1 = normalizeProperties(fields);
 
-if (JSON.stringify(data) === JSON.stringify(newData)) {
+const data2 = copyProperties(data1);
+
+if (JSON.stringify(data) === JSON.stringify(data2)) {
   console.log('Test passed');
 } else {
   throw new Error('Test failed');

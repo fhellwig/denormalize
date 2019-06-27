@@ -168,7 +168,7 @@ function normalizeProperties(map, normalizeArrays = true) {
 // copyProperties
 //------------------------------------------------------------------------------
 
-function copyProperties(map, normalizeArrays = true) {
+function copyProperties(data, normalizeArrays = true) {
   return normalizeProperties(denormalizeProperties(data), normalizeArrays);
 }
 
