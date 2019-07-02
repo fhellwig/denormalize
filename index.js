@@ -242,12 +242,12 @@ function _isObject(val) {
 //==============================================================================
 
 module.exports = {
-  getProperty,
-  setProperty,
-  createPropertyName,
-  parsePropertyName,
-  denormalizeProperties,
-  normalizeProperties,
-  copyProperties,
-  normalizeArrayProperties
+  getProperty: getProperty,
+  setProperty: setProperty,
+  createPropertyName: createPropertyName,
+  parsePropertyName: parsePropertyName,
+  denormalizeProperties: denormalizeProperties,
+  normalizeProperties: normalizeProperties,
+  copyProperties: copyProperties,
+  normalizeArrayProperties: normalizeArrayProperties
 };

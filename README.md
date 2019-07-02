@@ -2,6 +2,8 @@
 
 Functions that work with JavaScript objects and arrays using named properties.
 
+> Version 1.2 is now compatible with IE11.
+
 ## Example
 
 Given the following object...
