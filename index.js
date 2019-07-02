@@ -37,9 +37,11 @@ function setProperty(data, name, value) {
 // createPropertyName
 //------------------------------------------------------------------------------
 
-function createPropertyName(...args) {
+function createPropertyName() {
   const tokens = [];
-  args.forEach((arg, i) => {
+  const argCount = arguments.length;
+  for (let i = 0; i < argCount; i++) {
+    const arg = arguments[i];
     if (typeof arg === 'string') {
       if (tokens.length > 0) {
         tokens.push('.');
@@ -53,7 +55,7 @@ function createPropertyName(...args) {
     } else {
       throw new Error('Invalid argument type at index ' + i + ' (must be string or number).');
     }
-  });
+  }
   return tokens.join('');
 }
 
@@ -133,14 +135,14 @@ function denormalizeProperties(data, keys, map) {
   }
   if (_isArray(data)) {
     data.forEach((d, i) => {
-      denormalizeProperties(d, [...keys, i], map);
+      denormalizeProperties(d, keys.concat(i), map);
     });
   } else if (_isObject(data)) {
     Object.keys(data).forEach(key => {
-      denormalizeProperties(data[key], [...keys, key], map);
+      denormalizeProperties(data[key], keys.concat(key), map);
     });
   } else {
-    map[createPropertyName(...keys)] = data;
+    map[createPropertyName.apply(null, keys)] = data;
   }
   return map;
 }
