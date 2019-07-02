@@ -136,11 +136,11 @@ function denormalizeProperties(data, keys, map) {
     map = {};
   }
   if (_isArray(data)) {
-    data.forEach((d, i) => {
+    data.forEach(function(d, i) {
       denormalizeProperties(d, keys.concat(i), map);
     });
   } else if (_isObject(data)) {
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach(function(key) {
       denormalizeProperties(data[key], keys.concat(key), map);
     });
   } else {
@@ -158,7 +158,7 @@ function normalizeProperties(map, normalizeArrays = true) {
     throw new Error("The 'map' argument must be an object.");
   }
   let retval = {};
-  Object.keys(map).forEach(name => {
+  Object.keys(map).forEach(function(name) {
     setProperty(retval, name, map[name]);
   });
   if (normalizeArrays) {
@@ -182,12 +182,16 @@ function copyProperties(data, normalizeArrays = true) {
 
 function normalizeArrayProperties(data) {
   if (_isArray(data)) {
-    const normalized = data.filter(e => typeof e !== 'undefined');
-    return normalized.map(e => normalizeArrayProperties(e));
+    const normalized = data.filter(function(e) {
+      return typeof e !== 'undefined';
+    });
+    return normalized.map(function(e) {
+      return normalizeArrayProperties(e);
+    });
   }
   if (_isObject(data)) {
     const retval = {};
-    Object.keys(data).forEach(key => {
+    Object.keys(data).forEach(function(key) {
       retval[key] = normalizeArrayProperties(data[key]);
     });
     return retval;

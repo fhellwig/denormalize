@@ -1,6 +1,6 @@
 {
   "name": "denormalize",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Functions that work with JavaScript objects and arrays using named properties.",
   "main": "index.js",
   "scripts": {
