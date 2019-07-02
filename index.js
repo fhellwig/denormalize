@@ -8,7 +8,7 @@
 
 function getProperty(data, name) {
   if (!_isObject(data)) {
-    throw new Error(`The 'data' argument must be an object.`);
+    throw new Error("The 'data' argument must be an object.");
   }
   const keys = parsePropertyName(name);
   while (keys.length > 0) {
@@ -27,7 +27,7 @@ function getProperty(data, name) {
 
 function setProperty(data, name, value) {
   if (!_isObject(data)) {
-    throw new Error(`The 'data' argument must be an object.`);
+    throw new Error("The 'data' argument must be an object.");
   }
   const keys = parsePropertyName(name);
   return _setProperty(data, keys, value);
@@ -49,9 +49,9 @@ function createPropertyName(...args) {
       if (i === 0) {
         throw new Error('Invalid argument type at index 0 (first argument must be a string).');
       }
-      tokens.push(`[${arg}]`);
+      tokens.push('[' + arg + ']');
     } else {
-      throw new Error(`Invalid argument type at index ${i} (must be string or number).`);
+      throw new Error('Invalid argument type at index ' + i + ' (must be string or number).');
     }
   });
   return tokens.join('');
@@ -70,7 +70,7 @@ function parsePropertyName(s) {
       case '.':
         if (prevDelim !== ']') {
           if (token.length === 0) {
-            throw new Error(`Invalid syntax in '${s}' (unexpected '.' character).`);
+            throw new Error("Invalid syntax (unexpected '.' character): " + s);
           }
           tokens.push(token.join(''));
           token.length = 0;
@@ -79,7 +79,7 @@ function parsePropertyName(s) {
         break;
       case '[':
         if (prevDelim) {
-          throw new Error(`Invalid syntax in '${s}' (unexpected '[' character).`);
+          throw new Error("Invalid syntax (unexpected '[' character): " + s);
         }
         if (token.length > 0) {
           tokens.push(token.join(''));
@@ -89,18 +89,18 @@ function parsePropertyName(s) {
         break;
       case ']':
         if (prevDelim) {
-          throw new Error(`Invalid syntax in '${s}' (unexpected ']' character).`);
+          throw new Error("Invalid syntax (unexpected ']' character): " + s);
         }
         tokens.push(+token.join(''));
         if (isNaN(tokens[tokens.length - 1])) {
-          throw new Error(`Invalid syntax in '${s}' (invalid array index).`);
+          throw new Error('Invalid syntax (array index is not a number): ' + s);
         }
         token.length = 0;
         prevDelim = c;
         break;
       default:
         if (prevDelim === ']') {
-          throw new Error(`Invalid syntax in '${s}' (expected '.' after ']').`);
+          throw new Error("Invalid syntax (expected '.' after ']'): " + s);
         }
         token.push(c);
         prevDelim = null;
@@ -111,10 +111,10 @@ function parsePropertyName(s) {
     tokens.push(token.join(''));
   }
   if (tokens.length === 0) {
-    throw new Error(`Invalid syntax in '${s}' (name cannot be empty).`);
+    throw new Error('Invalid syntax (name cannot be empty): ' + s);
   }
   if (typeof tokens[0] === 'number') {
-    throw new Error(`Invalid syntax in '${s}' (name must start with a string property).`);
+    throw new Error('Invalid syntax (name must start with a string property): ' + s);
   }
   return tokens;
 }
@@ -126,7 +126,7 @@ function parsePropertyName(s) {
 function denormalizeProperties(data, keys, map) {
   if (arguments.length === 1) {
     if (!_isObject(data)) {
-      throw new Error(`The 'data' argument must be an object.`);
+      throw new Error("The 'data' argument must be an object.");
     }
     keys = [];
     map = {};
@@ -151,7 +151,7 @@ function denormalizeProperties(data, keys, map) {
 
 function normalizeProperties(map, normalizeArrays = true) {
   if (!_isObject(map)) {
-    throw new Error(`The 'map' argument must be an object.`);
+    throw new Error("The 'map' argument must be an object.");
   }
   let retval = {};
   Object.keys(map).forEach(name => {
