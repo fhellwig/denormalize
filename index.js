@@ -153,7 +153,10 @@ function denormalizeProperties(data, keys, map) {
 // normalizeProperties
 //------------------------------------------------------------------------------
 
-function normalizeProperties(map, normalizeArrays = true) {
+function normalizeProperties(map, normalizeArrays) {
+  if (typeof normalizeArrays === 'undefined') {
+    normalizeArrays = true;
+  }
   if (!_isObject(map)) {
     throw new Error("The 'map' argument must be an object.");
   }
@@ -172,7 +175,10 @@ function normalizeProperties(map, normalizeArrays = true) {
 // copyProperties
 //------------------------------------------------------------------------------
 
-function copyProperties(data, normalizeArrays = true) {
+function copyProperties(data, normalizeArrays) {
+  if (typeof normalizeArrays === 'undefined') {
+    normalizeArrays = true;
+  }
   return normalizeProperties(denormalizeProperties(data), normalizeArrays);
 }
 
