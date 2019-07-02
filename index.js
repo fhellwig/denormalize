@@ -66,8 +66,10 @@ function createPropertyName() {
 function parsePropertyName(s) {
   const tokens = [];
   const token = [];
+  const charCount = s.length;
   let prevDelim = null;
-  for (let c of s) {
+  for (let i = 0; i < charCount; i++) {
+    const c = s.charAt(i);
     switch (c) {
       case '.':
         if (prevDelim !== ']') {
