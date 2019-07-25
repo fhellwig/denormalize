@@ -10,9 +10,9 @@ function getProperty(data, name) {
   if (!_isObject(data)) {
     throw new Error("The 'data' argument must be an object.");
   }
-  const keys = parsePropertyName(name);
+  var keys = parsePropertyName(name);
   while (keys.length > 0) {
-    const key = keys.shift();
+    var key = keys.shift();
     data = data[key];
     if (data === undefined) {
       break;
@@ -29,7 +29,7 @@ function setProperty(data, name, value) {
   if (!_isObject(data)) {
     throw new Error("The 'data' argument must be an object.");
   }
-  const keys = parsePropertyName(name);
+  var keys = parsePropertyName(name);
   return _setProperty(data, keys, value);
 }
 
@@ -38,10 +38,10 @@ function setProperty(data, name, value) {
 //------------------------------------------------------------------------------
 
 function createPropertyName() {
-  const tokens = [];
-  const argCount = arguments.length;
-  for (let i = 0; i < argCount; i++) {
-    const arg = arguments[i];
+  var tokens = [];
+  var argCount = arguments.length;
+  for (var i = 0; i < argCount; i++) {
+    var arg = arguments[i];
     if (typeof arg === 'string') {
       if (tokens.length > 0) {
         tokens.push('.');
@@ -64,12 +64,12 @@ function createPropertyName() {
 //------------------------------------------------------------------------------
 
 function parsePropertyName(s) {
-  const tokens = [];
-  const token = [];
-  const charCount = s.length;
-  let prevDelim = null;
-  for (let i = 0; i < charCount; i++) {
-    const c = s.charAt(i);
+  var tokens = [];
+  var token = [];
+  var charCount = s.length;
+  var prevDelim = null;
+  for (var i = 0; i < charCount; i++) {
+    var c = s.charAt(i);
     switch (c) {
       case '.':
         if (prevDelim !== ']') {
@@ -160,7 +160,7 @@ function normalizeProperties(map, normalizeArrays) {
   if (!_isObject(map)) {
     throw new Error("The 'map' argument must be an object.");
   }
-  let retval = {};
+  var retval = {};
   Object.keys(map).forEach(function(name) {
     setProperty(retval, name, map[name]);
   });
@@ -188,7 +188,7 @@ function copyProperties(data, normalizeArrays) {
 
 function normalizeArrayProperties(data) {
   if (_isArray(data)) {
-    const normalized = data.filter(function(e) {
+    var normalized = data.filter(function(e) {
       return typeof e !== 'undefined';
     });
     return normalized.map(function(e) {
@@ -196,7 +196,7 @@ function normalizeArrayProperties(data) {
     });
   }
   if (_isObject(data)) {
-    const retval = {};
+    var retval = {};
     Object.keys(data).forEach(function(key) {
       retval[key] = normalizeArrayProperties(data[key]);
     });
@@ -210,7 +210,7 @@ function normalizeArrayProperties(data) {
 //==============================================================================
 
 function _setProperty(data, keys, value) {
-  const key = keys.shift();
+  var key = keys.shift();
   if (keys.length === 0) {
     data[key] = value;
   } else {
