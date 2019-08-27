@@ -31,7 +31,7 @@ const person = {
 ...we can denormalize the properties into a map as follows:
 
 ```javascript
-const { denormalizeProperties} = require('denormalize');
+const { denormalizeProperties } = require('denormalize');
 
 const map = denormalizeProperties(person);
 ```
@@ -77,10 +77,10 @@ The syntax for naming a property follows the conventional JavaScript dot notatio
 The following are all valid property names:
 
 ```javascript
-'parts[5].supplier.address.city'
-'theme.dark.colors'
-'name'
-'phone-numbers[3].area-code'
+'parts[5].supplier.address.city';
+'theme.dark.colors';
+'name';
+'phone-numbers[3].area-code';
 ```
 
 **A named property cannot start with an array index.** For example, `[1].person.name` is not valid. This is because, when normalizing a map (see `normalizeProperties`), we need to assume some starting point and this package always assumes an object. Once that is established, internal arrays can be created as nested properties in the object.
@@ -97,11 +97,11 @@ The `denormalize` package exports the following functions:
 
 - Sets the property value in the data specified by the name. Intermediate objects and arrays are created as needed. Please note that, using the array syntax, it is possible to create "holes" in arrays (i.e., unassigned elements). These holes can be removed by the `normalizeArrayProperties` function and are removed by default with the `normalizeProperties` function.
 
-- This function modifies the specified `data` parameter, which *must* be an object.
+- This function modifies the specified `data` parameter, which _must_ be an object.
 
 ### `createPropertyName(...args)`
 
-- Given a set of strings and numbers, creates a property name. For example, calling `createPropertyName('parts', 5, 'supplier', 'address', 'city')` returns the string `'parts[5].supplier.address.city'`. Numbers (i.e., `typeof arg === 'number'`) automatically get the bracket syntax as they are assumed to be an array index.
+- Given a set of strings and numbers, creates a property name. For example, calling `createPropertyName('parts', 5, 'supplier', 'address', 'city')` returns the string `'parts[5].supplier.address.city'`. Numbers (i.e., `typeof arg === 'number'`) automatically get the bracket syntax as they are assumed to be an array index. This function also accepts a single array argument: `createPropertyName(['parts', 5, 'supplier', 'address', 'city'])`.
 
 ### `parsePropertyName(name)`
 

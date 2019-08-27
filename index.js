@@ -39,9 +39,14 @@ function setProperty(data, name, value) {
 
 function createPropertyName() {
   var tokens = [];
-  var argCount = arguments.length;
-  for (var i = 0; i < argCount; i++) {
-    var arg = arguments[i];
+  var args = Array.prototype.slice.call(arguments);
+  var nargs = args.length;
+  if (nargs === 1 && Array.isArray(args[0])) {
+    args = args[0];
+    nargs = args.length;
+  }
+  for (var i = 0; i < nargs; i++) {
+    var arg = args[i];
     if (typeof arg === 'string') {
       if (tokens.length > 0) {
         tokens.push('.');
@@ -49,11 +54,15 @@ function createPropertyName() {
       tokens.push(arg);
     } else if (typeof arg === 'number') {
       if (i === 0) {
-        throw new Error('Invalid argument type at index 0 (first argument must be a string).');
+        throw new Error(
+          'Invalid argument type at index 0 (first argument must be a string).'
+        );
       }
       tokens.push('[' + arg + ']');
     } else {
-      throw new Error('Invalid argument type at index ' + i + ' (must be string or number).');
+      throw new Error(
+        'Invalid argument type at index ' + i + ' (must be string or number).'
+      );
     }
   }
   return tokens.join('');
@@ -118,7 +127,9 @@ function parsePropertyName(s) {
     throw new Error('Invalid syntax (name cannot be empty): ' + s);
   }
   if (typeof tokens[0] === 'number') {
-    throw new Error('Invalid syntax (name must start with a string property): ' + s);
+    throw new Error(
+      'Invalid syntax (name must start with a string property): ' + s
+    );
   }
   return tokens;
 }
@@ -144,7 +155,7 @@ function denormalizeProperties(data, keys, map) {
       denormalizeProperties(data[key], keys.concat(key), map);
     });
   } else {
-    map[createPropertyName.apply(null, keys)] = data;
+    map[createPropertyName(keys)] = data;
   }
   return map;
 }
