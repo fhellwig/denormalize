@@ -73,6 +73,9 @@ function createPropertyName() {
 //------------------------------------------------------------------------------
 
 function parsePropertyName(s) {
+  if (Array.isArray(s)) {
+    return s;
+  }
   var tokens = [];
   var token = [];
   var charCount = s.length;

@@ -91,7 +91,7 @@ The `denormalize` package exports the following functions:
 
 ### `getProperty(data, name)`
 
-- Returns the property value from the data specified by the name.
+- Returns the property value from the data specified by the name or `undefined` if no such property.
 
 ### `setProperty(data, name, value)`
 
@@ -105,7 +105,7 @@ The `denormalize` package exports the following functions:
 
 ### `parsePropertyName(name)`
 
-- Performs the inverse of the `createPropertyName` function. Calling `parsePropertyName('parts[5].supplier.address.city')` returns the array `['parts', 5, 'supplier', 'address', 'city']`.
+- Performs the inverse of the `createPropertyName` function. Calling `parsePropertyName('parts[5].supplier.address.city')` returns the array `['parts', 5, 'supplier', 'address', 'city']`. If the argument is an array, then this array is returned as-is. This means that the `getProperty` and `setProperty` functions, both of which call `parsePropertyName`, can also accept an array of name components instead of a string.
 
 ### `denormalizeProperties(data)`
 
