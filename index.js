@@ -242,7 +242,7 @@ function _isArray(val) {
 }
 
 function _isObject(val) {
-  return val !== null && val.constructor === Object;
+  return val != null && val.constructor === Object;
 }
 
 //==============================================================================
