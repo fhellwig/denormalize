@@ -54,15 +54,11 @@ function createPropertyName() {
       tokens.push(arg);
     } else if (typeof arg === 'number') {
       if (i === 0) {
-        throw new Error(
-          'Invalid argument type at index 0 (first argument must be a string).'
-        );
+        throw new Error('Invalid argument type at index 0 (first argument must be a string).');
       }
       tokens.push('[' + arg + ']');
     } else {
-      throw new Error(
-        'Invalid argument type at index ' + i + ' (must be string or number).'
-      );
+      throw new Error('Invalid argument type at index ' + i + ' (must be string or number).');
     }
   }
   return tokens.join('');
@@ -130,9 +126,7 @@ function parsePropertyName(s) {
     throw new Error('Invalid syntax (name cannot be empty): ' + s);
   }
   if (typeof tokens[0] === 'number') {
-    throw new Error(
-      'Invalid syntax (name must start with a string property): ' + s
-    );
+    throw new Error('Invalid syntax (name must start with a string property): ' + s);
   }
   return tokens;
 }
@@ -150,11 +144,11 @@ function denormalizeProperties(data, keys, map) {
     map = {};
   }
   if (_isArray(data)) {
-    data.forEach(function(d, i) {
+    data.forEach(function (d, i) {
       denormalizeProperties(d, keys.concat(i), map);
     });
   } else if (_isObject(data)) {
-    Object.keys(data).forEach(function(key) {
+    Object.keys(data).forEach(function (key) {
       denormalizeProperties(data[key], keys.concat(key), map);
     });
   } else {
@@ -175,7 +169,7 @@ function normalizeProperties(map, normalizeArrays) {
     throw new Error("The 'map' argument must be an object.");
   }
   var retval = {};
-  Object.keys(map).forEach(function(name) {
+  Object.keys(map).forEach(function (name) {
     setProperty(retval, name, map[name]);
   });
   if (normalizeArrays) {
@@ -202,16 +196,16 @@ function copyProperties(data, normalizeArrays) {
 
 function normalizeArrayProperties(data) {
   if (_isArray(data)) {
-    var normalized = data.filter(function(e) {
+    var normalized = data.filter(function (e) {
       return typeof e !== 'undefined';
     });
-    return normalized.map(function(e) {
+    return normalized.map(function (e) {
       return normalizeArrayProperties(e);
     });
   }
   if (_isObject(data)) {
     var retval = {};
-    Object.keys(data).forEach(function(key) {
+    Object.keys(data).forEach(function (key) {
       retval[key] = normalizeArrayProperties(data[key]);
     });
     return retval;
@@ -248,7 +242,7 @@ function _isArray(val) {
 }
 
 function _isObject(val) {
-  return val !== null && typeof val === 'object' && !_isArray(val);
+  return val !== null && val.constructor === Object;
 }
 
 //==============================================================================
