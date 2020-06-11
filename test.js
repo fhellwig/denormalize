@@ -2,25 +2,35 @@ const {
   getProperty,
   denormalizeProperties,
   normalizeProperties,
-  copyProperties
+  copyProperties,
 } = require('./index');
+
+if (normalizeProperties(denormalizeProperties(5)) !== 5) {
+  throw new Error('Test for primitive failed.');
+}
+
+const arr = normalizeProperties(denormalizeProperties([7]));
+
+if (arr.length !== 1 || arr[0] !== 7) {
+  throw new Error('Test for array failed.');
+}
 
 const data = {
   name: {
     first: 'John',
-    last: 'Smith'
+    last: 'Smith',
   },
   friends: ['Alice', 'Bob'],
   dates: [
     {
       type: 'birthdate',
-      date: '1994-03-12'
+      date: '1994-03-12',
     },
     {
       type: 'graduation',
-      date: '2012-06-20'
-    }
-  ]
+      date: '2012-06-20',
+    },
+  ],
 };
 
 const fields = denormalizeProperties(data);
@@ -33,8 +43,8 @@ const data1 = normalizeProperties(fields);
 
 const data2 = copyProperties(data1);
 
-if (JSON.stringify(data) === JSON.stringify(data2)) {
-  console.log('Test passed');
-} else {
-  throw new Error('Test failed');
+if (JSON.stringify(data) !== JSON.stringify(data2)) {
+  throw new Error('Test for complex data failed.');
 }
+
+console.log('Test passed.');

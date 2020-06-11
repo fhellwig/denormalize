@@ -12,19 +12,19 @@ Given the following object...
 const person = {
   name: {
     first: 'John',
-    last: 'Smith'
+    last: 'Smith',
   },
   friends: ['Alice', 'Bob'],
   dates: [
     {
       type: 'birthdate',
-      date: '1994-03-12'
+      date: '1994-03-12',
     },
     {
       type: 'graduation',
-      date: '2012-06-20'
-    }
-  ]
+      date: '2012-06-20',
+    },
+  ],
 };
 ```
 
@@ -81,9 +81,8 @@ The following are all valid property names:
 'theme.dark.colors';
 'name';
 'phone-numbers[3].area-code';
+'[0]';
 ```
-
-**A named property cannot start with an array index.** For example, `[1].person.name` is not valid. This is because, when normalizing a map (see `normalizeProperties`), we need to assume some starting point and this package always assumes an object. Once that is established, internal arrays can be created as nested properties in the object.
 
 ## API
 
@@ -97,7 +96,7 @@ The `denormalize` package exports the following functions:
 
 - Sets the property value in the data specified by the name. Intermediate objects and arrays are created as needed. Please note that, using the array syntax, it is possible to create "holes" in arrays (i.e., unassigned elements). These holes can be removed by the `normalizeArrayProperties` function and are removed by default with the `normalizeProperties` function.
 
-- This function modifies the specified `data` parameter, which _must_ be an object.
+- This function modifies the specified `data` (unless `null` or `undefined`) and returns the modified (or created) data.
 
 ### `createPropertyName(...args)`
 
@@ -109,7 +108,7 @@ The `denormalize` package exports the following functions:
 
 ### `denormalizeProperties(data)`
 
-- Given an object, creates a map of property names to property values. The result of calling this is shown in the example above.
+- Given any value, creates a map of property names to property values. The result of calling this is shown in the example above.
 
 ### `normalizeProperties(map [, normalizeArrays])`
 
@@ -139,7 +138,7 @@ On getting the data from the server, I call `denormalizeProperties` to turn the 
 
 MIT License
 
-Copyright (c) 2019 Frank Hellwig
+Copyright (c) 2020 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

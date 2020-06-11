@@ -7,9 +7,6 @@
 //------------------------------------------------------------------------------
 
 function getProperty(data, name) {
-  if (!_isObject(data)) {
-    throw new Error("The 'data' argument must be an object.");
-  }
   var keys = parsePropertyName(name);
   while (keys.length > 0) {
     var key = keys.shift();
@@ -26,9 +23,6 @@ function getProperty(data, name) {
 //------------------------------------------------------------------------------
 
 function setProperty(data, name, value) {
-  if (!_isObject(data)) {
-    throw new Error("The 'data' argument must be an object.");
-  }
   var keys = parsePropertyName(name);
   return _setProperty(data, keys, value);
 }
@@ -53,9 +47,6 @@ function createPropertyName() {
       }
       tokens.push(arg);
     } else if (typeof arg === 'number') {
-      if (i === 0) {
-        throw new Error('Invalid argument type at index 0 (first argument must be a string).');
-      }
       tokens.push('[' + arg + ']');
     } else {
       throw new Error('Invalid argument type at index ' + i + ' (must be string or number).');
@@ -122,12 +113,6 @@ function parsePropertyName(s) {
   if (token.length > 0) {
     tokens.push(token.join(''));
   }
-  if (tokens.length === 0) {
-    throw new Error('Invalid syntax (name cannot be empty): ' + s);
-  }
-  if (typeof tokens[0] === 'number') {
-    throw new Error('Invalid syntax (name must start with a string property): ' + s);
-  }
   return tokens;
 }
 
@@ -137,9 +122,6 @@ function parsePropertyName(s) {
 
 function denormalizeProperties(data, keys, map) {
   if (arguments.length === 1) {
-    if (!_isObject(data)) {
-      throw new Error("The 'data' argument must be an object.");
-    }
     keys = [];
     map = {};
   }
@@ -168,9 +150,9 @@ function normalizeProperties(map, normalizeArrays) {
   if (!_isObject(map)) {
     throw new Error("The 'map' argument must be an object.");
   }
-  var retval = {};
+  var retval = null;
   Object.keys(map).forEach(function (name) {
-    setProperty(retval, name, map[name]);
+    retval = setProperty(retval, name, map[name]);
   });
   if (normalizeArrays) {
     return normalizeArrayProperties(retval);
@@ -219,20 +201,27 @@ function normalizeArrayProperties(data) {
 
 function _setProperty(data, keys, value) {
   var key = keys.shift();
-  if (keys.length === 0) {
-    data[key] = value;
-  } else {
-    if (data[key] === undefined) {
-      // Look ahead at the next key and create an object under the current key
-      // depending the type of the next key. If it is a number, this indicates
-      // an array. Otherwise, it is a string indicating an object is next.
-      if (typeof keys[0] === 'number') {
-        data[key] = [];
-      } else {
-        data[key] = {};
+  switch (typeof key) {
+    case 'string':
+      if (data == null) {
+        data = {};
       }
-    }
-    _setProperty(data[key], keys, value);
+      if (!_isObject(data)) {
+        throw new Error("Expected an object for '" + key + "'");
+      }
+      data[key] = _setProperty(data[key], keys, value);
+      break;
+    case 'number':
+      if (data == null) {
+        data = [];
+      }
+      if (!_isArray(data)) {
+        throw new Error("Expected an array for '" + key + "'");
+      }
+      data[key] = _setProperty(data[key], keys, value);
+      break;
+    default:
+      return value;
   }
   return data;
 }
@@ -243,6 +232,10 @@ function _isArray(val) {
 
 function _isObject(val) {
   return val != null && val.constructor === Object;
+}
+
+function _isUndefined(val) {
+  return typeof val === 'undefined';
 }
 
 //==============================================================================
@@ -257,5 +250,5 @@ module.exports = {
   denormalizeProperties: denormalizeProperties,
   normalizeProperties: normalizeProperties,
   copyProperties: copyProperties,
-  normalizeArrayProperties: normalizeArrayProperties
+  normalizeArrayProperties: normalizeArrayProperties,
 };
