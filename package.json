@@ -1,10 +1,10 @@
 {
   "name": "denormalize",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Functions that work with JavaScript objects and arrays using named properties.",
-  "main": "index.js",
+  "main": "denormalize.js",
   "scripts": {
-    "test": "node test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/fhellwig/denormalize/issues"
   },
-  "homepage": "https://github.com/fhellwig/denormalize#readme"
+  "homepage": "https://github.com/fhellwig/denormalize#readme",
+  "devDependencies": {
+    "mocha": "^8.0.1"
+  }
 }

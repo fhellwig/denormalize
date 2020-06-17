@@ -2,7 +2,7 @@
 
 Functions that work with JavaScript objects and arrays using named properties.
 
-> Version 1.2.5 is compatible with IE10.
+> Version 1.2.7 is compatible with IE10.
 
 ## Example
 
