@@ -1,6 +1,6 @@
 {
   "name": "denormalize",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Functions that work with JavaScript objects and arrays using named properties.",
   "type": "module",
   "main": "denormalize.cjs",
