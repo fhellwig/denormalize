@@ -2,7 +2,7 @@
 
 Functions that work with JavaScript objects and arrays using named properties.
 
-> Version 1.2.7 is compatible with IE10.
+> Version 1.2.8 is compatible with IE10 and with ES modules.
 
 ## Example
 
@@ -32,7 +32,13 @@ const person = {
 
 ```javascript
 const { denormalizeProperties } = require('denormalize');
+const map = denormalizeProperties(person);
+```
 
+or
+
+```javascript
+import { denormalizeProperties } from 'denormalize';
 const map = denormalizeProperties(person);
 ```
 
