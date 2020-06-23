@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import denormalize from './denormalize.cjs';
+import denormalize from './denormalize.js';
 
 export const getProperty = denormalize.getProperty;
 export const setProperty = denormalize.setProperty;

@@ -1,12 +1,12 @@
 {
   "name": "denormalize",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Functions that work with JavaScript objects and arrays using named properties.",
-  "type": "module",
-  "main": "denormalize.cjs",
+  "type": "commonjs",
+  "main": "./denormalize.js",
   "exports": {
     "import": "./denormalize.mjs",
-    "require": "./denormalize.cjs"
+    "require": "./denormalize.js"
   },
   "scripts": {
     "test": "mocha"

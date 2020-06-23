@@ -22,15 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-import assert from 'assert';
+const assert = require('assert');
 
-import {
+const {
   setProperty,
   getProperty,
   denormalizeProperties,
   normalizeProperties,
   copyProperties,
-} from '../denormalize.mjs';
+} = require('../denormalize.js');
 
 describe('denormalize', function () {
   describe('setProperty', function () {
