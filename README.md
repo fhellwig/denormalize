@@ -2,7 +2,7 @@
 
 Functions that work with JavaScript objects and arrays using named properties.
 
-> Version 1.2.10 is compatible with IE10 and with ES modules.
+> Version 1.2.11 is compatible with IE10 and with ES modules.
 
 ## Example
 
@@ -144,7 +144,7 @@ On getting the data from the server, I call `denormalizeProperties` to turn the 
 
 MIT License
 
-Copyright (c) 2020 Frank Hellwig
+Copyright (c) 2022 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
